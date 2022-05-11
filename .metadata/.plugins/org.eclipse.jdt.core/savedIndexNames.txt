@@ -1,0 +1,20 @@
+INDEX VERSION 1.131+C:\Users\Igor Ribeiro\Desktop\Course-Udemy-Java\Course-Java\.metadata\.plugins\org.eclipse.jdt.core
+867938617.index
+4014014971.index
+1509321840.index
+2478820039.index
+4024016397.index
+3724043230.index
+1607676702.index
+2978894160.index
+4158933016.index
+992463004.index
+3251601353.index
+3023488572.index
+4070079676.index
+3964520256.index
+3212418882.index
+1704534457.index
+2160572723.index
+296882406.index
+200689321.index
