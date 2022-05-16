@@ -6,10 +6,10 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Scanner;
 
-import model.entities.CarRental;
-import model.entities.Vehicle;
-import model.services.BrazilTaxService;
-import model.services.RentalService;
+import entities.Contract;
+import entities.Installment;
+import services.ContractService;
+import services.PaypalService;
 
 public class Program {
 
@@ -17,31 +17,29 @@ public class Program {
 		
 		Locale.setDefault(Locale.US);
 		Scanner sc = new Scanner(System.in);
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
-		System.out.println("Enter rental data");
-		System.out.print("Car model: ");
-		String carModel = sc.nextLine();
-		System.out.print("Pickup (dd/MM/yyyy hh:mm): ");
-		Date start = sdf.parse(sc.nextLine());
-		System.out.print("Return (dd/MM/yyyy hh:mm): ");
-		Date finish = sdf.parse(sc.nextLine());
+		System.out.println("Enter contract data");
+		System.out.print("Number: ");
+		Integer number = sc.nextInt();
+		System.out.print("Date (dd/MM/yyyy): ");
+		Date date = sdf.parse(sc.next());
+		System.out.print("Contract value: ");
+		Double totalValue = sc.nextDouble();
 		
-		CarRental cr = new CarRental(start, finish, new Vehicle(carModel));
+		Contract contract = new Contract(number, date, totalValue);
 		
-		System.out.print("Enter price per hour: ");
-		double pricePerHour = sc.nextDouble();
-		System.out.print("Enter price per day: ");
-		double pricePerDay = sc.nextDouble();
+		System.out.print("Enter number of installments: ");
+		int N = sc.nextInt();
 		
-		RentalService rentalService = new RentalService(pricePerDay, pricePerHour, new BrazilTaxService());
+		ContractService cs = new ContractService(new PaypalService());
 		
-		rentalService.processInvoice(cr);
+		cs.processContract(contract, N);
 		
-		System.out.println("INVOICE:");
-		System.out.println("Basic payment: " + String.format("%.2f", cr.getInvoice().getBasicPayment()));
-		System.out.println("Tax: " + String.format("%.2f", cr.getInvoice().getTax()));
-		System.out.println("Total payment: " + String.format("%.2f", cr.getInvoice().getTotalPayment()));
+		System.out.println("Installments: ");
+		for (Installment it : contract.getInstallments()) {
+			System.out.println(it);
+		}
 		
 		sc.close();
 	}
