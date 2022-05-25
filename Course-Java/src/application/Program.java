@@ -1,47 +1,34 @@
 package application;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import entities.Contract;
-import entities.Installment;
-import services.ContractService;
-import services.PaypalService;
+import entities.Employee;
 
 public class Program {
-
-	public static void main(String[] args) throws ParseException {
+	
+	public static void main(String[] args) {
 		
-		Locale.setDefault(Locale.US);
-		Scanner sc = new Scanner(System.in);
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		List<Employee> list = new ArrayList<>();
+		String path = "C:\\java\\in.txt.txt";
 		
-		System.out.println("Enter contract data");
-		System.out.print("Number: ");
-		Integer number = sc.nextInt();
-		System.out.print("Date (dd/MM/yyyy): ");
-		Date date = sdf.parse(sc.next());
-		System.out.print("Contract value: ");
-		Double totalValue = sc.nextDouble();
-		
-		Contract contract = new Contract(number, date, totalValue);
-		
-		System.out.print("Enter number of installments: ");
-		int N = sc.nextInt();
-		
-		ContractService cs = new ContractService(new PaypalService());
-		
-		cs.processContract(contract, N);
-		
-		System.out.println("Installments: ");
-		for (Installment it : contract.getInstallments()) {
-			System.out.println(it);
+		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+			String employeeCsv = br.readLine();
+			while (employeeCsv != null) {
+				String[] fields = employeeCsv.split(",");
+				list.add(new Employee(fields[0], Double.parseDouble(fields[1])));
+				employeeCsv = br.readLine();
+			}
+			Collections.sort(list);
+			for (Employee emp : list) {
+				System.out.println(emp.getName() + ", " + emp.getSalary());
+			}
+		} catch (IOException e) {
+			System.out.println("Error: " + e.getMessage());
 		}
-		
-		sc.close();
 	}
 }
-
